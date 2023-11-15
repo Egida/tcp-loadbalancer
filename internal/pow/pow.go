@@ -12,6 +12,13 @@ import (
 
 type (
 	PoW interface {
+		GetA() string
+		Generate() (string, string)
+		SetNonce(str string)
+		Solve(str string) (string, bool)
+		SetSecret(secret string)
+		SetDifficulty(level int)
+		SetTimestamp(t time.Time)
 	}
 	pow struct {
 		A          hashBytes
@@ -82,6 +89,10 @@ func (p *pow) Generate() (string, string) {
 	return p.B.String(), a[:len(a)-(p.Difficulty)]
 }
 
+func (p *pow) GetA() string {
+	return p.A.String()
+}
+
 // Solve solves the given problem
 func (p *pow) Solve(str string) (string, bool) {
 	arrLen := 64 - len(str)
@@ -90,7 +101,6 @@ func (p *pow) Solve(str string) (string, bool) {
 
 func (p *pow) backtrack(arrLen int, str string, path string) (string, bool) {
 	if len(path) == arrLen {
-		fmt.Sprintf("%s%s\n", str, path)
 		if ok, _ := p.isOK(str, path); ok {
 			return fmt.Sprintf("%s%s", str, path), true
 		}
@@ -98,7 +108,7 @@ func (p *pow) backtrack(arrLen int, str string, path string) (string, bool) {
 	}
 	for _, value := range arr {
 		if s, ok := p.backtrack(arrLen, str, fmt.Sprintf("%s%s", path, value)); ok {
-			return fmt.Sprintf("%s", s), true
+			return s, true
 		}
 	}
 	return "", false
