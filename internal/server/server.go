@@ -8,6 +8,9 @@ import (
 
 type Server interface {
 	ListenAndServe()
+	ResponseString(c *net.TCPConn, str string) error
+	ResponseInt(c *net.TCPConn, i int) error
+	ResponseByte(c *net.TCPConn, b []byte) error
 }
 
 type (
