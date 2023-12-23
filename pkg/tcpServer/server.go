@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 type Server interface {
 	ListenAndServe()
-	ResponseString(c *net.TCPConn, str string) error
-	ResponseInt(c *net.TCPConn, i int) error
-	ResponseByte(c *net.TCPConn, b []byte) error
 }
 
 type (
@@ -35,6 +35,14 @@ func StartNewServer(addr string, handlerFunction handlerFn) Server {
 }
 
 func (s *server) ListenAndServe() {
+	fmt.Printf("Starting server on %s \n", s.address)
+	go s.listenAndServe()
+	quitChannel := make(chan os.Signal, 1)
+	signal.Notify(quitChannel, syscall.SIGINT, syscall.SIGTERM)
+	<-quitChannel
+}
+
+func (s *server) listenAndServe() {
 	addr, err := net.ResolveTCPAddr("tcp", s.address)
 	if err != nil {
 		log.Println("address is invalid", s.address)
@@ -54,18 +62,17 @@ func (s *server) ListenAndServe() {
 		}
 		go s.handler(conn)
 	}
-
 }
 
-func (s *server) ResponseString(c *net.TCPConn, str string) error {
-	return s.ResponseByte(c, []byte(str))
+func ResponseString(c *net.TCPConn, str string) error {
+	return ResponseByte(c, []byte(str))
 }
 
-func (s *server) ResponseInt(c *net.TCPConn, i int) error {
-	return s.ResponseString(c, fmt.Sprintf("%d", i))
+func ResponseInt(c *net.TCPConn, i int) error {
+	return ResponseString(c, fmt.Sprintf("%d", i))
 }
 
-func (s *server) ResponseByte(c *net.TCPConn, b []byte) error {
+func ResponseByte(c *net.TCPConn, b []byte) error {
 	_, err := c.Write(b)
 	return err
 }

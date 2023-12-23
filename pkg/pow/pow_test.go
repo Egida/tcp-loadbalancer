@@ -1,6 +1,7 @@
 package pow
 
 import (
+	"fmt"
 	"testing"
 	"time"
 )
@@ -8,7 +9,7 @@ import (
 // TODO : complete test cases
 func TestNewPoW(t *testing.T) {
 	tm := time.Now()
-	p := NewPoW([]byte("secret"), []byte("nonce"), 3, tm)
+	p := NewPoW([]byte("secret"), []byte("nonce"), 6, tm)
 	b, _ := p.Generate()
 
 	sp := NewPoW(nil, nil, 0, time.Now())
@@ -21,6 +22,7 @@ func TestNewPoW(t *testing.T) {
 		if s != p.GetA() {
 			t.Fail()
 		}
+		fmt.Println(s, b)
 	}
 
 }
