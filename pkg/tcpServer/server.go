@@ -2,11 +2,12 @@ package tcpserver
 
 import (
 	"fmt"
-	"log"
 	"net"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/amupxm/tcp-loadbalancer/internal/logger"
 )
 
 type Server interface {
@@ -35,30 +36,32 @@ func StartNewServer(addr string, handlerFunction handlerFn) Server {
 }
 
 func (s *server) ListenAndServe() {
-	fmt.Printf("Starting server on %s \n", s.address)
-	go s.listenAndServe()
+	log := logger.NewLogger()
+	log.Infof("Starting server on %s \n", s.address)
+	go s.listenAndServe(log)
 	quitChannel := make(chan os.Signal, 1)
 	signal.Notify(quitChannel, syscall.SIGINT, syscall.SIGTERM)
 	<-quitChannel
 }
 
-func (s *server) listenAndServe() {
+func (s *server) listenAndServe(log logger.Logger) {
 	addr, err := net.ResolveTCPAddr("tcp", s.address)
 	if err != nil {
-		log.Println("address is invalid", s.address)
+		log.Errorf("address is invalid", err)
 	}
 
 	ls, err := net.ListenTCP("tcp", addr)
 	if err != nil {
-		log.Println("error while listening", err)
+		log.Errorf("error while listening", err)
 	}
 	defer ls.Close()
-	log.Println("Start listening on :", s.address)
+
+	log.Infof("Start listening on :", s.address)
 
 	for {
 		conn, err := ls.AcceptTCP()
 		if err != nil {
-			log.Println("error while creating connection", err)
+			log.Errorf("error while creating connection", err)
 		}
 		go s.handler(conn)
 	}
