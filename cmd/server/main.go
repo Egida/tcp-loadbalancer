@@ -1,24 +1,11 @@
 package main
 
 import (
-	"net"
-
+	config "github.com/amupxm/tcp-loadbalancer/cfg"
 	tcpserver "github.com/amupxm/tcp-loadbalancer/pkg/tcpServer"
 )
 
-type (
-	Server interface {
-		ListenAndServe()
-	}
-	server struct {
-		Address           string
-		activeConnections int
-		handler           handlerFn
-	}
-	handlerFn func(n *net.TCPConn) error
-)
-
 func main() {
-	tcpSrv := tcpserver.StartNewServer("localhost:8080", tcpserver.DefaultHandler)
+	tcpSrv := tcpserver.StartNewServer(config.GetAddress(), tcpserver.DefaultHandler)
 	tcpSrv.ListenAndServe()
 }
