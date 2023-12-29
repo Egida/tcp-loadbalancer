@@ -3,7 +3,6 @@ package server
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"net"
 	"strings"
 
@@ -11,7 +10,10 @@ import (
 )
 
 type (
-	Server interface{}
+	Server interface {
+		// Listen starts the server on the host and port specified
+		Listen()
+	}
 	server struct {
 		fn                TCPHandlerFunction
 		log               logger.Logger
@@ -48,6 +50,7 @@ func (s *server) Listen() {
 	s.log.Infof("Start listening on [%s:%s]", s.host, s.port)
 	for {
 		conn, err := ls.AcceptTCP()
+		s.log.Infof("New connection from %s", conn.RemoteAddr().String())
 		if err != nil {
 			s.log.Errorf("error while creating connection", err)
 		}
@@ -56,9 +59,11 @@ func (s *server) Listen() {
 }
 
 func (s *server) DefaultHandler(c *net.TCPConn) error {
-	log.Printf("Serving %s\n", c.RemoteAddr().String())
+	s.log.Infof("Serving %s\n", c.RemoteAddr().String())
 	s.activeConnections = s.activeConnections + 1
 	for {
+		s.log.Infof("message received %s", 11)
+
 		netData, err := bufio.NewReader(c).ReadString('\n')
 		if err != nil {
 			fmt.Println(err)
@@ -66,6 +71,7 @@ func (s *server) DefaultHandler(c *net.TCPConn) error {
 		}
 
 		message := strings.TrimSpace(string(netData))
+		s.log.Infof("message received %s", message)
 		if ok := s.HandleMessage(c, message); !ok {
 			break
 		}

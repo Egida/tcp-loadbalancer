@@ -60,7 +60,7 @@ void Listen(server* s, TCPHandlerFunction handlerFn) {
         // Assuming DefaultHandler returns 0 on success
         if (fork() == 0) {
             close(serverSocket);
-            handlerFn(clientSocket);
+            handlerFn(clientSocket, NULL);
             close(clientSocket);
             exit(EXIT_SUCCESS);
         } else {

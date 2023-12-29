@@ -9,9 +9,11 @@ import (
 )
 
 func DefaultHandler(c *net.TCPConn) error {
-	log.Printf("Serving %s\n", c.RemoteAddr().String())
+	log.Printf("dd Serving %s\n", c.RemoteAddr().String())
 	activeConnections = activeConnections + 1
 	for {
+		log.Printf("Serving %s\n", c.RemoteAddr().String())
+
 		netData, err := bufio.NewReader(c).ReadString('\n')
 		if err != nil {
 			fmt.Println(err)

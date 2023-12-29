@@ -1,6 +1,10 @@
+github.com/amupxm/xmus-logger v0.0.0-20220801151436-dab7bf01b091 h1:qknztkCGAJxUGj0GdMOvMhwLL/yG3cYKtBWGGURm8tg=
+github.com/amupxm/xmus-logger v0.0.0-20220801151436-dab7bf01b091/go.mod h1:+ZpTuxAuKYnqzAeBlnJeuNwO4Zy2G+PNKh+tOAnanC8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
+github.com/reiver/go-xim v0.0.0-20211109002721-54f5d55f2755 h1:uE0VszwdTqm+FuQ0zaeLenSAKVtuW9rZwZDUxzp0GrU=
+github.com/reiver/go-xim v0.0.0-20211109002721-54f5d55f2755/go.mod h1:4/4I9cwUAtLgXEKw5QI1b1P1CS7yNftzQftwEANn/s8=
 github.com/sirupsen/logrus v1.9.3 h1:dueUQJ1C2q9oE3F7wvmSGAaVtTmUizReu6fjN8uqzbQ=
 github.com/sirupsen/logrus v1.9.3/go.mod h1:naHLuLoDiP4jHNo9R0sCBMtWGeIprob74mVsIT4qYEQ=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
