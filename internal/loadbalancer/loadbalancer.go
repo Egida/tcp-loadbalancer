@@ -13,23 +13,22 @@ import (
 
 type (
 	LoadBalancer interface {
+		StartAndListen()
+		RegisterServer(host string, port int)
+		RemoveServer(host string, port int)
 	}
 	loadBalancer struct {
-		host       string
-		port       int
-		remoteHost string
-		remotePort int
-		log        logger.Logger
+		host string
+		port int
+		log  logger.Logger
 	}
 )
 
 func NewLoadBalancer(remoteHost string, remotePort int, host string, port int, log logger.Logger) LoadBalancer {
 	return &loadBalancer{
-		remoteHost: remoteHost,
-		remotePort: remotePort,
-		host:       host,
-		port:       port,
-		log:        log,
+		host: host,
+		port: port,
+		log:  log,
 	}
 }
 
@@ -53,8 +52,20 @@ func (l *loadBalancer) StartAndListen() {
 			continue
 		}
 
-		go handleConnection(clientConn, fmt.Sprintf("%s:%d", l.remoteHost, l.remotePort))
+		go handleConnection(clientConn, l.findPreferredServer())
 	}
+}
+
+func (l *loadBalancer) findPreferredServer() string {
+	targetServer := ""
+	targetServerActiveConnections := -1
+	for server, activeConnections := range Servers {
+		if targetServerActiveConnections < activeConnections {
+			targetServer = server
+			targetServerActiveConnections = activeConnections
+		}
+	}
+	return targetServer
 }
 
 func (l *loadBalancer) RegisterServer(host string, port int) {
@@ -71,6 +82,7 @@ func (l *loadBalancer) RemoveServer(host string, port int) {
 }
 
 func handleConnection(clientConn net.Conn, remoteAddr string) {
+	Servers[remoteAddr] = Servers[remoteAddr] + 1
 	// Connect to the remote server
 	remoteConn, err := net.Dial("tcp", remoteAddr)
 	if err != nil {
@@ -84,7 +96,11 @@ func handleConnection(clientConn net.Conn, remoteAddr string) {
 	go func() {
 		_, err := io.Copy(remoteConn, clientConn)
 		if err != nil {
-			fmt.Println("Error copying from client to remote:", err)
+			if err.Error() != "EOF" {
+				Servers[remoteAddr] = Servers[remoteAddr] - 1
+				return
+			}
+
 		}
 	}()
 
@@ -95,9 +111,3 @@ func handleConnection(clientConn net.Conn, remoteAddr string) {
 
 	clientConn.Close()
 }
-
-// func main() {
-// 	localAddr := "127.0.0.1:8080"
-// 	remoteAddr := "example.com:80"
-
-// }

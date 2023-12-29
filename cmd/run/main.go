@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/amupxm/tcp-loadbalancer/internal/client"
+	"github.com/amupxm/tcp-loadbalancer/internal/loadbalancer"
 	"github.com/amupxm/tcp-loadbalancer/internal/server"
 	"github.com/amupxm/tcp-loadbalancer/pkg/logger"
 )
@@ -29,7 +30,7 @@ var runConfig = Config{
 	Servers: []servers{
 		{
 			Host: "localhost",
-			Port: 8080,
+			Port: 8081,
 		},
 	},
 	Clients: []clients{
@@ -52,12 +53,17 @@ var runConfig = Config{
 }
 
 func main() {
+	lb := loadbalancer.NewLoadBalancer("localhost", 8080, "localhost", 8080, logger.NewLogger("run/loadbalancer"))
 	for _, srv := range runConfig.Servers {
-		go func() {
+		lb.RegisterServer(srv.Host, srv.Port)
+		go func(srv servers) {
 			instance := server.NewServer(srv.Host, srv.Port, logger.NewLogger("run/server"), TCPHandler)
 			instance.Listen()
-		}()
+		}(srv)
 	}
+	time.Sleep(1 * time.Second)
+
+	go lb.StartAndListen()
 	time.Sleep(1 * time.Second)
 	for _, cl := range runConfig.Clients {
 		go func() {

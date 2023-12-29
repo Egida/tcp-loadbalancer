@@ -1,0 +1,28 @@
+config:
+  servers:
+    - name: "server1"
+      host: "localhost"
+      port: 3306
+    - name: "server2"
+      host: "localhost"
+      port: 3307
+  clients:
+    - name: "client1"
+      host: "localhost"
+      port: 4410
+    - name: "client2"
+      host: "localhost"
+      port: 4411
+    - name: "client3"
+      host: "localhost"
+      port: 4412
+    - name: "client4"
+      host: "localhost"
+      port: 4412
+    - name: "client5"
+      host: "localhost"
+      port: 4413
+    - name: "client6"
+      host: "localhost"
+      port: 4414
+      
