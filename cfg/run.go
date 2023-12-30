@@ -2,41 +2,49 @@ package config
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"gopkg.in/yaml.v2"
 )
 
+type Server struct {
+	Name string `yaml:"name"`
+	Host string `yaml:"host"`
+	Port int    `yaml:"port"`
+}
+type Client struct {
+	Name string `yaml:"name"`
+	Host string `yaml:"host"`
+	Port int    `yaml:"port"`
+}
 type ConfigFile struct {
 	Config struct {
-		Servers []struct {
-			Name string `yaml:"name"`
-			Host string `yaml:"host"`
-			Port int    `yaml:"port"`
-		} `yaml:"servers"`
-		Clients []struct {
-			Name string `yaml:"name"`
-			Host string `yaml:"host"`
-			Port int    `yaml:"port"`
-		} `yaml:"clients"`
+		Servers []Server `yaml:"servers"`
+		Clients []Client `yaml:"clients"`
 	} `yaml:"config"`
 }
 
-var config Config
-var path string = "sample.yaml"
+var cfg ConfigFile
+var path string = "sample.yml"
 
 func init() {
-
-	data, err := os.ReadFile(path)
+	currentDir, err := os.Getwd()
 	if err != nil {
-		log.Fatalf("Error reading YAML file: %v", err)
+		panic(err)
+	}
+	data, err := os.ReadFile(fmt.Sprintf("%s/%s", currentDir, path))
+	if err != nil {
+		panic(err)
 	}
 
 	// Parse YAML data into the Config struct
-	err = yaml.Unmarshal(data, &config)
+	err = yaml.Unmarshal(data, &cfg)
 	if err != nil {
-		log.Fatalf("Error unmarshalling YAML: %v", err)
+		panic(err)
 	}
-	fmt.Println(config)
+	fmt.Println(cfg)
+}
+
+func GetConfig() ConfigFile {
+	return cfg
 }

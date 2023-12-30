@@ -9,20 +9,20 @@ config:
   clients:
     - name: "client1"
       host: "localhost"
-      port: 4410
+      port: 8080
     - name: "client2"
       host: "localhost"
-      port: 4411
+      port: 8080
     - name: "client3"
       host: "localhost"
-      port: 4412
+      port: 8080
     - name: "client4"
       host: "localhost"
-      port: 4412
+      port: 8080
     - name: "client5"
       host: "localhost"
-      port: 4413
+      port: 8080
     - name: "client6"
       host: "localhost"
-      port: 4414
+      port: 8080
       

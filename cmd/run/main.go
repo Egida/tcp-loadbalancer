@@ -4,6 +4,7 @@ import (
 	"net"
 	"time"
 
+	config "github.com/amupxm/tcp-loadbalancer/cfg"
 	"github.com/amupxm/tcp-loadbalancer/internal/client"
 	"github.com/amupxm/tcp-loadbalancer/internal/loadbalancer"
 	"github.com/amupxm/tcp-loadbalancer/internal/server"
@@ -53,20 +54,25 @@ var runConfig = Config{
 }
 
 func main() {
+
+	cfg := config.GetConfig()
+
 	lb := loadbalancer.NewLoadBalancer("localhost", 8080, "localhost", 8080, logger.NewLogger("run/loadbalancer"))
-	for _, srv := range runConfig.Servers {
+
+	for _, srv := range cfg.Config.Servers {
 		lb.RegisterServer(srv.Host, srv.Port)
-		go func(srv servers) {
+		go func(srv config.Server) {
 			instance := server.NewServer(srv.Host, srv.Port, logger.NewLogger("run/server"), TCPHandler)
 			instance.Listen()
 		}(srv)
 	}
+
 	time.Sleep(1 * time.Second)
 
 	go lb.StartAndListen()
 	time.Sleep(1 * time.Second)
-	for _, cl := range runConfig.Clients {
-		go func() {
+	for _, cl := range cfg.Config.Clients {
+		go func(cl config.Client) {
 			instance := client.NewClient(logger.NewLogger("run/client"), cl.Host, cl.Port)
 			instance.Connect()
 			time.Sleep(1 * time.Second)
@@ -75,7 +81,7 @@ func main() {
 			if err != nil {
 				logger.NewLogger("run/client").Error(err)
 			}
-		}()
+		}(cl)
 	}
 	select {}
 	// TODO : implement graceful shutdown
