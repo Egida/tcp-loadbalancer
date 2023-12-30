@@ -27,32 +27,6 @@ type (
 	}
 )
 
-var runConfig = Config{
-	Servers: []servers{
-		{
-			Host: "localhost",
-			Port: 8081,
-		},
-	},
-	Clients: []clients{
-		{
-			Host:            "localhost",
-			Port:            8080,
-			MessageInterval: 1 * time.Second,
-		},
-		{
-			Host:            "localhost",
-			Port:            8080,
-			MessageInterval: 1 * time.Second,
-		},
-		{
-			Host:            "localhost",
-			Port:            8080,
-			MessageInterval: 1 * time.Second,
-		},
-	},
-}
-
 func main() {
 
 	cfg := config.GetConfig()
