@@ -42,7 +42,6 @@ func main() {
 	}
 
 	time.Sleep(1 * time.Second)
-
 	go lb.StartAndListen()
 	time.Sleep(1 * time.Second)
 	for _, cl := range cfg.Config.Clients {

@@ -1,5 +1,7 @@
 github.com/amupxm/xmus-logger v0.0.0-20220801151436-dab7bf01b091 h1:qknztkCGAJxUGj0GdMOvMhwLL/yG3cYKtBWGGURm8tg=
 github.com/amupxm/xmus-logger v0.0.0-20220801151436-dab7bf01b091/go.mod h1:+ZpTuxAuKYnqzAeBlnJeuNwO4Zy2G+PNKh+tOAnanC8=
+github.com/amupxm/xmus-logger v0.0.0-20231230124635-b3a4331e62f6 h1:Vm/IH7bOdcbzJRgSSXZxByb+N/qo2cfQC/4ywrK+wLE=
+github.com/amupxm/xmus-logger v0.0.0-20231230124635-b3a4331e62f6/go.mod h1:+ZpTuxAuKYnqzAeBlnJeuNwO4Zy2G+PNKh+tOAnanC8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=

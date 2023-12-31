@@ -72,7 +72,7 @@ void Listen(server* s, TCPHandlerFunction handlerFn) {
 }
 
 void DefaultHandler(int clientSocket) {
-    printf("Serving client\n");
+    printf("Serving client");
     // Your DefaultHandler logic goes here
 }
 

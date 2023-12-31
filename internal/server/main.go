@@ -59,7 +59,7 @@ func (s *server) Listen() {
 }
 
 func (s *server) DefaultHandler(c *net.TCPConn) error {
-	s.log.Infof("Serving %s\n", c.RemoteAddr().String())
+	s.log.Infof("Serving %s", c.RemoteAddr().String())
 	s.activeConnections = s.activeConnections + 1
 	for {
 		s.log.Infof("message received %s", 11)

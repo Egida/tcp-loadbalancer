@@ -25,15 +25,17 @@ type (
 	}
 )
 
-func NewLogger(prefix string) Logger {
-	l := log.CreateLogger(&log.LoggerOptions{
-		LogLevel: log.Info,
+var l log.Logger
+
+func init() {
+	l = log.CreateLogger(&log.Options{
+		LogLevel: log.Warn,
 	})
-	if prefix != "" {
-		l = l.BeginWithPrefix(prefix)
-	}
+}
+
+func NewLogger(prefix string) Logger {
 	return &logger{
-		l: l,
+		l: l.BeginWithPrefix(prefix),
 	}
 }
 
@@ -59,4 +61,8 @@ func (l *logger) Warn(intr ...interface{}) {
 
 func (l *logger) Warnf(format string, intr ...interface{}) {
 	l.l.Warnf(format, intr...)
+}
+
+func AddWhiteList(str ...string) {
+	l.AddToWhitelist(str...)
 }

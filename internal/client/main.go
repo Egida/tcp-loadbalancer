@@ -51,7 +51,6 @@ func (c *client) SendMessage(msg []byte) ([]byte, error) {
 		c.log.Warn("connection is nil")
 		c.Connect()
 	}
-	c.log.Warn("Writing")
 
 	_, err := c.conn.Write([]byte(msg))
 	if err != nil {
