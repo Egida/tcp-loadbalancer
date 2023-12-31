@@ -29,7 +29,7 @@ var l log.Logger
 
 func init() {
 	l = log.CreateLogger(&log.Options{
-		LogLevel: log.Warn,
+		LogLevel: log.Info,
 	})
 }
 

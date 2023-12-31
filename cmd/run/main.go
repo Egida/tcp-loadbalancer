@@ -54,6 +54,7 @@ func main() {
 			if err != nil {
 				logger.NewLogger("run/client").Error(err)
 			}
+
 		}(cl)
 	}
 	select {}
