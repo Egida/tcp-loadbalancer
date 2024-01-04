@@ -9,11 +9,13 @@
 
 char *alphanumerics = "0123456789abcdefghijklmnopqrstuvwxyz";
 
+// max : returns the maximum of two numbers
 size_t max(size_t a, size_t b)
 {
     return a > b ? a : b;
 }
 
+// hash_to_string : converts a hash to a string
 static void hash_to_string(char string[65], const uint8_t hash[32])
 {
     size_t i;
@@ -23,6 +25,7 @@ static void hash_to_string(char string[65], const uint8_t hash[32])
     }
 }
 
+// appendChars : appends two strings together. str1 + str2
 char *appendChars(char *str1, char *str2)
 {
     char *result = malloc(sizeof(char) * (strlen(str1) + strlen(str2) + 1));
@@ -36,6 +39,7 @@ char *appendChars(char *str1, char *str2)
     return result;
 }
 
+// appendChar : appends a char to a string. str + ch
 char *appendChar(char *str, char ch)
 {
     char *result = malloc(sizeof(char) * (strlen(str) + 2));
@@ -49,6 +53,8 @@ char *appendChar(char *str, char ch)
     result[strlen(str) + 1] = '\0';
     return result;
 }
+
+// calculate_sha256_hash : calculates the sha256 hash of a string
 char *calculate_sha256_hash(const char *input)
 {
     char command[MAX_COMMAND_LENGTH];
@@ -87,6 +93,7 @@ char *calculate_sha256_hash(const char *input)
     return result;
 }
 
+// isOk : checks if the hash of a string is equal to another hash
 bool isOk(char *hash1, char *hash2)
 {
     int lenHash1 = (int)strlen(hash1);
@@ -102,6 +109,7 @@ bool isOk(char *hash1, char *hash2)
     return false;
 }
 
+// backtrack : backtracks the hash1 string to match the hash2 string
 char *backtrack(char *hash1, char *hash2)
 {
 
@@ -127,6 +135,7 @@ char *backtrack(char *hash1, char *hash2)
     return NULL;
 }
 
+// solve : solves the problem
 char *solve(char *hash1, char *hash2)
 {
     size_t lh1 = strlen(hash1);
@@ -145,10 +154,6 @@ char *solve(char *hash1, char *hash2)
         {
             result[i] = hash1[i];
         }
-        else
-        {
-            // result[i] = alphanumerics[rand() % 36];
-        }
     }
     char *path = "";
     result = backtrack(hash1, hash2);
@@ -163,7 +168,6 @@ int main()
 
     char *hash1 = "ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48b"; // removed two chars from the end
     char *hash2 = "da3811154d59c4267077ddd8bb768fa9b06399c486e1fc00485116b57c9872f5";
-    // // char *result = appendChar(hash1, "abb");
 
     char *result = solve(hash1, hash2);
     printf("%s\n", result); // should print "ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb"
